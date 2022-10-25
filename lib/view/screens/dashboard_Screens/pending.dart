@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seclob_agent/core/utils/converter.dart';
+import 'package:seclob_agent/services/api_service.dart';
 import '../../providers/colors.dart';
 
 class PendingPage extends ConsumerStatefulWidget {
@@ -383,13 +384,14 @@ class _PendigPageState extends ConsumerState<PendingPage> {
                                             isExpanded: true,
                                             underline: const SizedBox(),
                                             dropdownColor: ticketstatusColor,
-                                            value: dropdownvalue,
                                             iconSize: 15,
+                                            value: widget.title,
                                             iconEnabledColor: dropdownColor,
-                                            onChanged: (newValue) {
-                                              setState(() {
-                                                dropdownvalue = newValue!;
-                                              });
+                                            onChanged: (newStatus) async {
+                                              await ApiService.updateLeadStatus(
+                                                id: lead['id'].toString(),
+                                                status: newStatus!,
+                                              );
                                             },
                                             items: <String>[
                                               'Pending',
@@ -397,22 +399,24 @@ class _PendigPageState extends ConsumerState<PendingPage> {
                                               'Rejected',
                                               'Not Reachable',
                                               'Delete',
-                                              'Rescheduled'
+                                              'Rescheduled',
                                             ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem(
-                                                alignment: Alignment.centerLeft,
-                                                value: value,
-                                                child: Center(
-                                                  child: Text(
-                                                    value,
-                                                    style: const TextStyle(
-                                                        fontSize: 9,
-                                                        color: dropdownColor),
+                                              (String value) {
+                                                return DropdownMenuItem(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  value: value,
+                                                  child: Center(
+                                                    child: Text(
+                                                      value,
+                                                      style: const TextStyle(
+                                                          fontSize: 9,
+                                                          color: dropdownColor),
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }).toList(),
+                                                );
+                                              },
+                                            ).toList(),
                                           ),
                                         ),
                                       ),

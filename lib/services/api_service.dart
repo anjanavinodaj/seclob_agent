@@ -215,4 +215,26 @@ class ApiService {
       throw Exception;
     }
   }
+
+  //==================== Update Lead Status ====================
+  static Future updateLeadStatus(
+      {required String id, required String status}) async {
+    try {
+      final form = json.encode({"status": status});
+
+      final response = await http.post(
+        Uri.parse(ApiEndpoints.updateLeadStatus + id),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AccessToken.token}'
+        },
+        body: form,
+      );
+
+      log(response.body.toString(), name: 'Response');
+    } catch (e) {
+      log(e.toString());
+      throw Exception;
+    }
+  }
 }

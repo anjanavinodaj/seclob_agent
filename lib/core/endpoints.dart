@@ -13,4 +13,5 @@ class ApiEndpoints {
   static const services = kBaseUrl + 'home/services/search';
   static const createLeads = kBaseUrl + 'telecaller/leads/create';
   static const listLeads = kBaseUrl + 'telecaller/leads';
+  static const updateLeadStatus = kBaseUrl + 'telecaller/leads/status/';
 }

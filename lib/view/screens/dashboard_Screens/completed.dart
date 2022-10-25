@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:seclob_agent/services/api_service.dart';
 import '../../providers/colors.dart';
 
-class Completed extends StatefulWidget {
-  const Completed({Key? key}) : super(key: key);
+final _pendingProvider = FutureProvider<List>((ref) async {
+  return ApiService.getLeads(query: '', status: 'completed');
+});
+
+class Completed extends ConsumerStatefulWidget {
+  const Completed({
+    required this.leads,
+    Key? key,
+  }) : super(key: key);
+
+  final List<Map> leads;
 
   @override
-  _CompletedState createState() => _CompletedState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CompletedState();
 }
 
-class _CompletedState extends State<Completed> {
+class _CompletedState extends ConsumerState<Completed> {
   TextEditingController search = TextEditingController();
   String dropdownvalue = 'Completed';
   String filtervalue = 'Pending';
@@ -30,6 +41,8 @@ class _CompletedState extends State<Completed> {
 
   @override
   Widget build(BuildContext context) {
+    final _completed = ref.watch(_pendingProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: textcolor,
@@ -251,205 +264,228 @@ class _CompletedState extends State<Completed> {
                   ),
                 ],
               ), //filter
-              Expanded(
-                child: ListView.builder(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (BuildContext ctxt, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Container(
-                          height: 150,
-                          width: 320,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11),
-                            color: listviewColor,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 20, right: 20, top: 18, bottom: 18),
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        'Sample name',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: primaryColor,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        '9745640896',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: listviewtextColor,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(height: 2),
-                                      SizedBox(
-                                        width: 193,
-                                        child: Text(
-                                          'Area name',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: listviewtextColor,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      SizedBox(height: 1),
-                                      SizedBox(
-                                        width: 193,
-                                        child: Text(
-                                          'Service type',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: listviewtextColor,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      SizedBox(height: 1),
-                                      SizedBox(
-                                        width: 193,
-                                        child: Text(
-                                          '10.09.2022',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: listviewtextColor,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+              _completed.when(
+                data: (data) {
+                  return Expanded(
+                    child: ListView.builder(
+                        physics: const ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext ctxt, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: Container(
+                              height: 150,
+                              width: 320,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(11),
+                                color: listviewColor,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 30, bottom: 18, right: 5),
-                                child: Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        height: 21,
-                                        width: 89,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: completedStatusColor,
-                                        ),
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 37,
-                                          decoration: BoxDecoration(
-                                              color: completedStatusColor,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 18,
+                                        bottom: 18),
+                                    child: Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: const [
+                                          Text(
+                                            'Sample name',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: primaryColor,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            '9745640896',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: listviewtextColor,
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(height: 2),
+                                          SizedBox(
+                                            width: 193,
+                                            child: Text(
+                                              'Area name',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: listviewtextColor,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          SizedBox(height: 1),
+                                          SizedBox(
+                                            width: 193,
+                                            child: Text(
+                                              'Service type',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: listviewtextColor,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          SizedBox(height: 1),
+                                          SizedBox(
+                                            width: 193,
+                                            child: Text(
+                                              '10.09.2022',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: listviewtextColor,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 30, bottom: 18, right: 5),
+                                    child: Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 21,
+                                            width: 89,
+                                            decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(2),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: background
-                                                        .withOpacity(1),
-                                                    spreadRadius: 4,
-                                                    blurRadius: 3)
-                                              ]),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: DropdownButton<String>(
-                                              isExpanded: true,
-                                              underline: const SizedBox(),
-                                              dropdownColor:
-                                                  completedStatusColor,
-                                              value: dropdownvalue,
-                                              iconSize: 15,
-                                              iconEnabledColor: dropdownColor,
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  dropdownvalue = newValue!;
-                                                });
-                                              },
-                                              items: <String>[
-                                                'Pending',
-                                                'Completed',
-                                                'Rejected',
-                                                'Not Reachable',
-                                                'Delete',
-                                                'Rescheduled'
-                                              ].map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  value: value,
-                                                  child: Center(
-                                                    child: Text(
-                                                      value,
-                                                      style: const TextStyle(
-                                                          fontSize: 9,
-                                                          color: dropdownColor),
+                                              color: completedStatusColor,
+                                            ),
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 37,
+                                              decoration: BoxDecoration(
+                                                  color: completedStatusColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color: background
+                                                            .withOpacity(1),
+                                                        spreadRadius: 4,
+                                                        blurRadius: 3)
+                                                  ]),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, right: 5),
+                                                child: DropdownButton<String>(
+                                                  isExpanded: true,
+                                                  underline: const SizedBox(),
+                                                  dropdownColor:
+                                                      completedStatusColor,
+                                                  value: dropdownvalue,
+                                                  iconSize: 15,
+                                                  iconEnabledColor:
+                                                      dropdownColor,
+                                                  onChanged: (newValue) {
+                                                    setState(() {
+                                                      dropdownvalue = newValue!;
+                                                    });
+                                                  },
+                                                  items: <String>[
+                                                    'Pending',
+                                                    'Completed',
+                                                    'Rejected',
+                                                    'Not Reachable',
+                                                    'Delete',
+                                                    'Rescheduled'
+                                                  ].map<
+                                                          DropdownMenuItem<
+                                                              String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      value: value,
+                                                      child: Center(
+                                                        child: Text(
+                                                          value,
+                                                          style: const TextStyle(
+                                                              fontSize: 9,
+                                                              color:
+                                                                  dropdownColor),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 3),
+                                          Container(
+                                            height: 21,
+                                            width: 89,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                              color: primaryColor,
+                                            ),
+                                            child: Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, right: 5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: const [
+                                                    Icon(
+                                                      Icons.phone_outlined,
+                                                      size: 10,
+                                                      color: dropdownColor,
                                                     ),
-                                                  ),
-                                                );
-                                              }).toList(),
+                                                    Text(
+                                                      'Click to Call',
+                                                      style: TextStyle(
+                                                          fontSize: 9,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
+                                          )
+                                        ],
                                       ),
-                                      const SizedBox(height: 3),
-                                      Container(
-                                        height: 21,
-                                        width: 89,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: primaryColor,
-                                        ),
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: const [
-                                                Icon(
-                                                  Icons.phone_outlined,
-                                                  size: 10,
-                                                  color: dropdownColor,
-                                                ),
-                                                Text(
-                                                  'Click to Call',
-                                                  style: TextStyle(
-                                                      fontSize: 9,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              ), //listview
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  );
+                },
+                error: (_, __) {
+                  return const Center(
+                    child: Text('Something went wrong'),
+                  );
+                },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
             ],
           ),
         ),

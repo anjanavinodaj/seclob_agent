@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seclob_agent/view/screens/splash/screen_splash.dart';
 
 void main() {
@@ -11,13 +12,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Seclob Agent',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Seclob Agent',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const ScreenSplash(),
       ),
-      home: const ScreenSplash(),
     );
   }
 }

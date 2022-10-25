@@ -22,28 +22,11 @@ class _AddNumberState extends State<AddNumber> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController districtController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
-
   final ValueNotifier<List<Map>> servicesNotifier = ValueNotifier([]);
 
   String stateId = '';
   String districtId = '';
   List<int> servicesIds = [];
-
-  DateTime selectedDate = DateTime.now();
-
-  _selectDate(BuildContext context) async {
-    final DateTime? selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2025),
-    );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +35,7 @@ class _AddNumberState extends State<AddNumber> {
         backgroundColor: textcolor,
         centerTitle: true,
         title: const Text(
-          'Add number',
+          'Create Leads',
           style: TextStyle(fontSize: 16),
         ),
         leading: InkWell(
@@ -72,74 +55,6 @@ class _AddNumberState extends State<AddNumber> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Pick date',
-                      style: (TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Poppins',
-                      )),
-                    ),
-                    const SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 37,
-                        decoration: BoxDecoration(
-                            color: dropdownColor,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: background.withOpacity(1),
-                                  spreadRadius: 3,
-                                  blurRadius: 3)
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                height: 37,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                    color: background,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: background.withOpacity(1),
-                                          spreadRadius: 3,
-                                          blurRadius: 3)
-                                    ]),
-                                child: const Icon(
-                                  Icons.calendar_today_outlined,
-                                  size: 16,
-                                  color: dropdowniconColor,
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Text(
-                                "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}",
-                                style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: dateColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

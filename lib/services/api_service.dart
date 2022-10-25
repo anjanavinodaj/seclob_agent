@@ -183,4 +183,36 @@ class ApiService {
       throw Exception;
     }
   }
+
+  //==================== List Leads ====================
+  static Future<List<dynamic>> getLeads(
+      {required String query, required String status}) async {
+    try {
+      final form =
+          json.encode({"limit": "100", "search": query, "status": status});
+
+      final response = await http.post(
+        Uri.parse(ApiEndpoints.listLeads),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AccessToken.token}'
+        },
+        body: form,
+      );
+
+      log(response.body.toString(), name: 'Response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final _results = json.decode(response.body) as Map;
+        final _users = _results['users'] as List;
+        return _users;
+      } else {
+        log('Error Occured!');
+        throw Exception;
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception;
+    }
+  }
 }

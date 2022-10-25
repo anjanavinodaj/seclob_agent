@@ -29,6 +29,8 @@ class ScreenSplash extends StatelessWidget {
 
     final bool? isLogin = prefs.getBool('login');
 
+    // await prefs.remove('login');
+
     AccessToken.token = prefs.getString('token');
 
     if (isLogin == true) {

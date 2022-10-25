@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/menu_box.dart';
 import 'package:seclob_agent/view/providers/path.dart';
-import 'package:seclob_agent/view/screens/dashboard_Screens/rescheduled.dart';
 
 import '../../providers/colors.dart';
 import '../Expenses/expenses.dart';
 import '../Tickets/tickets.dart';
 import '../add_number/add_number.dart';
-import '../dashboard_Screens/completed.dart';
-import '../dashboard_Screens/deleted.dart';
-import '../dashboard_Screens/not_reachable.dart';
 import '../dashboard_Screens/pending.dart';
-import '../dashboard_Screens/rejected.dart';
 import '../profile/profile.dart';
 import '../work_report/work_reports.dart';
 
-class HomePage extends StatefulWidget {
+final _listLeadsProvider = FutureProvider<List>((ref) async {
+  return ApiService.getLeads(query: '', status: '');
+});
+
+class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _listLeads = ref.watch(_listLeadsProvider);
 
-class _HomePageState extends State<HomePage> {
-  int pageIndex = 0;
-
-  // final pages = [
-  //   const Page1(),
-  //   const Page2(),
-  //   const Page3(),
-  //   const Page4(),
-  // ];
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             body: Stack(
@@ -68,111 +58,174 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      child: GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        primary: false,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const PendingPage()),
-                              );
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Pending",
-                              bgColor: boxcolor1,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor3,
-                            ),
+                    _listLeads.when(
+                      data: (data) {
+                        final List<Map> pendingLeads = [];
+                        final List<Map> completedLeads = [];
+                        final List<Map> rejectedLeads = [];
+                        final List<Map> notReachedLeads = [];
+                        final List<Map> deletedLeads = [];
+                        final List<Map> rescheduledLeads = [];
+
+                        for (Map lead in data) {
+                          if (lead['status'] == 'New') pendingLeads.add(lead);
+                          if (lead['status'] == 'Completed') {
+                            completedLeads.add(lead);
+                          }
+                          if (lead['status'] == 'Rejected') {
+                            rejectedLeads.add(lead);
+                          }
+                          if (lead['status'] == 'Not Reachable') {
+                            notReachedLeads.add(lead);
+                          }
+                          if (lead['status'] == 'Deleted') {
+                            deletedLeads.add(lead);
+                          }
+                          if (lead['status'] == 'Rescheduled') {
+                            rescheduledLeads.add(lead);
+                          }
+                        }
+
+                        return SizedBox(
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            primary: false,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: pendingLeads,
+                                        title: 'Pending',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: pendingLeads.length.toString(),
+                                  title: "Pending",
+                                  bgColor: boxcolor1,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor3,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: completedLeads,
+                                        title: 'Completed',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: completedLeads.length.toString(),
+                                  title: "Completed",
+                                  bgColor: boxcolor2,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor2,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: rejectedLeads,
+                                        title: 'Rejected',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: rejectedLeads.length.toString(),
+                                  title: "Rejected",
+                                  bgColor: boxcolor3,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor3,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: notReachedLeads,
+                                        title: 'Not Reachable',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: notReachedLeads.length.toString(),
+                                  title: "Not Reachable",
+                                  bgColor: boxcolor4,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor4,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: deletedLeads,
+                                        title: 'Deleted',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: deletedLeads.length.toString(),
+                                  title: "Deleted",
+                                  bgColor: boxcolor5,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor1,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PendingPage(
+                                        leads: rescheduledLeads,
+                                        title: 'Rescheduled',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: rescheduledLeads.length.toString(),
+                                  title: "Rescheduled",
+                                  bgColor: boxcolor6,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor1,
+                                ),
+                              ),
+                            ],
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Completed()),
-                              );
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Completed",
-                              bgColor: boxcolor2,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor2,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Rejected()),
-                              );
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Rejected",
-                              bgColor: boxcolor3,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor3,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const NotReachable()));
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Not Reachable",
-                              bgColor: boxcolor4,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor4,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Deleted()));
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Deleted",
-                              bgColor: boxcolor5,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor1,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Rescheduled()));
-                            },
-                            child: const MenuBox(
-                              count: "2",
-                              title: "Rescheduled",
-                              bgColor: boxcolor6,
-                              textColor: boxSecondaryColor1,
-                              titleColor: boxSecondaryColor1,
-                            ),
-                          ),
-                        ],
+                        );
+                      },
+                      error: (_, __) {
+                        return const Center(
+                          child: Text('Something went wrong'),
+                        );
+                      },
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                     const SizedBox(

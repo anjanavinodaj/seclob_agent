@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../providers/colors.dart';
 import '../Tickets/tickets.dart';
+
 class Workreport extends StatefulWidget {
   const Workreport({Key? key}) : super(key: key);
 
@@ -10,9 +11,8 @@ class Workreport extends StatefulWidget {
 }
 
 class _WorkreportState extends State<Workreport> {
-
   DateTime selectedDate = DateTime.now();
-  TextEditingController details=TextEditingController();
+  TextEditingController details = TextEditingController();
 
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -20,13 +20,10 @@ class _WorkreportState extends State<Workreport> {
       initialDate: selectedDate,
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
-
     );
     if (selected != null && selected != selectedDate) {
       setState(() {
-
         selectedDate = selected;
-
       });
     }
   }
@@ -35,18 +32,17 @@ class _WorkreportState extends State<Workreport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:textcolor,
+        backgroundColor: textcolor,
         centerTitle: true,
-        title:const Text(
+        title: const Text(
           'Work report',
-          style: TextStyle(
-              fontSize: 16
-          ),),
+          style: TextStyle(fontSize: 16),
+        ),
         leading: InkWell(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             size: 20,
           ),
@@ -56,23 +52,20 @@ class _WorkreportState extends State<Workreport> {
         child: SingleChildScrollView(
           child: Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(top: 20,left: 20,right: 20,bottom: 20),
+              padding: const EdgeInsets.only(
+                  top: 20, left: 20, right: 20, bottom: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Pick date',
-                    style: (
-                        TextStyle(
-                          fontSize: 12,
-                          fontWeight:FontWeight.w500,
-                          fontFamily: 'Poppins',
-                        )
-                    ),
+                    style: (TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
+                    )),
                   ),
-
-                  SizedBox(height:10),
-
+                  const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
                       _selectDate(context);
@@ -82,18 +75,15 @@ class _WorkreportState extends State<Workreport> {
                       height: 37,
                       decoration: BoxDecoration(
                           color: dropdownColor,
-                          borderRadius:
-                          BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                                color:background.withOpacity(1),
+                                color: background.withOpacity(1),
                                 spreadRadius: 3,
-                                blurRadius: 3
-                            )
-                          ]
-                      ),
+                                blurRadius: 3)
+                          ]),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -102,17 +92,13 @@ class _WorkreportState extends State<Workreport> {
                               width: 40,
                               decoration: BoxDecoration(
                                   color: background,
-                                  borderRadius:
-                                  BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8),
                                   boxShadow: [
                                     BoxShadow(
-                                        color:background.withOpacity(1),
+                                        color: background.withOpacity(1),
                                         spreadRadius: 3,
-                                        blurRadius: 3
-                                    )
-                                  ]
-                              ),
-
+                                        blurRadius: 3)
+                                  ]),
                               child: const Icon(
                                 Icons.calendar_today_outlined,
                                 size: 16,
@@ -126,99 +112,88 @@ class _WorkreportState extends State<Workreport> {
                                   fontFamily: 'Poppins',
                                   color: dateColor,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 11
-                              ),
+                                  fontSize: 11),
                             )
                           ],
                         ),
                       ),
                     ),
                   ),
-
-                  SizedBox(height:25),
-
+                  const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Enter details',
-                        style: (
-                            TextStyle(
-                                fontSize: 12,
-                                fontWeight:FontWeight.w500
-                            )
-                        ),),
-                      SizedBox(height: 10,),
+                        style: (TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500)),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Container(
-
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color:dropdownColor,
+                            color: dropdownColor,
                             boxShadow: [
                               BoxShadow(
-                                  color:background.withOpacity(1),
+                                  color: background.withOpacity(1),
                                   spreadRadius: 3,
-                                  blurRadius: 3
-                              )
-                            ]
-                        ),
+                                  blurRadius: 3)
+                            ]),
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: TextFormField(
                             maxLines: 5,
                             controller: details,
-                            cursorColor:dateColor,
-                            decoration: InputDecoration(
+                            cursorColor: dateColor,
+                            decoration: const InputDecoration(
                               hintText: 'Enter details',
                               border: InputBorder.none,
-                              hintStyle:TextStyle(
+                              hintStyle: TextStyle(
                                   color: dropdowniconColor,
                                   fontSize: 11,
-                                  fontWeight: FontWeight.w500
-                              ),
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
-                      ) ,
-                      SizedBox(height: 15,),
-
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: InkWell(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Tickets()));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Tickets()));
                           },
                           child: Container(
                             width: double.infinity,
                             height: 43,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: textcolor
-                            ),
-                            child: Center(
+                                color: textcolor),
+                            child: const Center(
                               child: Text(
                                 'Submit',
                                 style: TextStyle(
-                                    color: dropdownColor,
-                                    fontSize: 12
-                                ),
+                                    color: dropdownColor, fontSize: 12),
                               ),
                             ),
                           ),
                         ),
                       ),
-
-
                     ],
                   ),
-
                 ],
               ),
             ),
           ),
         ),
-
       ),
     );
   }

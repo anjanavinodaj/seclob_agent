@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
+
 class AlertBox extends StatefulWidget {
   const AlertBox({Key? key}) : super(key: key);
 
@@ -8,13 +9,13 @@ class AlertBox extends StatefulWidget {
 }
 
 class _AlertBoxState extends State<AlertBox> {
-  TextEditingController notes=TextEditingController();
+  TextEditingController notes = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: dropdowniconColor,
       body: Padding(
-        padding: const EdgeInsets.only(left: 20,right: 20,top: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,22 +23,21 @@ class _AlertBoxState extends State<AlertBox> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: background
+                borderRadius: BorderRadius.circular(10),
+                color: background,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 30,top: 5),
+                padding: const EdgeInsets.only(left: 30, top: 5),
                 child: TextFormField(
                   maxLines: 10,
                   controller: notes,
-                  cursorColor:dateColor,
-                  decoration: InputDecoration(
+                  cursorColor: dateColor,
+                  decoration: const InputDecoration(
                     hintText: 'Add notes',
-                    hintStyle:TextStyle(
+                    hintStyle: TextStyle(
                         color: dropdowniconColor,
                         fontSize: 11,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -45,7 +45,7 @@ class _AlertBoxState extends State<AlertBox> {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -53,15 +53,11 @@ class _AlertBoxState extends State<AlertBox> {
                   height: 43,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: background
-                  ),
-                  child: Center(
+                      color: background),
+                  child: const Center(
                     child: Text(
                       'Continue',
-                      style: TextStyle(
-                          color: textcolor,
-                          fontSize: 12
-                      ),
+                      style: TextStyle(color: textcolor, fontSize: 12),
                     ),
                   ),
                 ),

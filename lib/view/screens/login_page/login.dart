@@ -16,8 +16,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController mobile = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +56,15 @@ class _LoginState extends State<Login> {
                 const Text(
                   'Log in',
                   style: TextStyle(
-                      fontStyle: FontStyle.normal,
-                      fontSize: 15,
-                      color: secondaryTextcolor,
-                      fontWeight: FontWeight.w600),
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15,
+                    color: secondaryTextcolor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 15),
                 EditableBox(
-                  controller: mobile,
+                  controller: mobileController,
                   name: 'Mobile',
                   hint: 'Enter your mobile number ',
                   type: TextInputType.phone,
@@ -78,7 +77,7 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 5),
                 EditableBox(
-                  controller: password,
+                  controller: passwordController,
                   name: 'Password',
                   hint: 'Enter your password ',
                   type: TextInputType.visiblePassword,
@@ -96,8 +95,8 @@ class _LoginState extends State<Login> {
                     final state = _formKey.currentState!;
 
                     if (state.validate()) {
-                      final _username = mobile.text;
-                      final _password = password.text;
+                      final _username = mobileController.text;
+                      final _password = passwordController.text;
 
                       final token = await ApiService.login(
                         mobile: _username,

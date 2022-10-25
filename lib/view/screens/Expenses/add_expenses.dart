@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:seclob_agent/view/screens/Expenses/expenses.dart';
 
 import '../../providers/colors.dart';
-import '../Tickets/tickets.dart';
-class Add_Expenses extends StatefulWidget {
-  const Add_Expenses({Key? key}) : super(key: key);
+
+class AddExpenses extends StatefulWidget {
+  const AddExpenses({Key? key}) : super(key: key);
 
   @override
-  _Add_ExpensesState createState() => _Add_ExpensesState();
+  _AddExpensesState createState() => _AddExpensesState();
 }
 
-class _Add_ExpensesState extends State<Add_Expenses> {
-
+class _AddExpensesState extends State<AddExpenses> {
   DateTime selectedDate = DateTime.now();
-  TextEditingController Kms=TextEditingController();
-  TextEditingController totalAmount=TextEditingController();
+  TextEditingController kms = TextEditingController();
+  TextEditingController totalAmount = TextEditingController();
 
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -22,36 +21,31 @@ class _Add_ExpensesState extends State<Add_Expenses> {
       initialDate: selectedDate,
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
-
     );
     if (selected != null && selected != selectedDate) {
       setState(() {
-
         selectedDate = selected;
-
       });
     }
-    }
+  }
 
-   String dropdownvalue='Bike';
-
+  String dropdownvalue = 'Bike';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:textcolor,
+        backgroundColor: textcolor,
         centerTitle: true,
-        title:const Text(
+        title: const Text(
           'Add Expenses',
-          style: TextStyle(
-                 fontSize: 16
-          ),),
+          style: TextStyle(fontSize: 16),
+        ),
         leading: InkWell(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             size: 20,
           ),
@@ -59,23 +53,19 @@ class _Add_ExpensesState extends State<Add_Expenses> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20,left: 20,right: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Pick date',
-                style: (
-                    TextStyle(
-                    fontSize: 12,
-                    fontWeight:FontWeight.w500,
-                    fontFamily: 'Poppins',
-              )
+                style: (TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins',
+                )),
               ),
-              ),
-
-              SizedBox(height:10),
-
+              const SizedBox(height: 10),
               InkWell(
                 onTap: () {
                   _selectDate(context);
@@ -84,19 +74,16 @@ class _Add_ExpensesState extends State<Add_Expenses> {
                   width: double.infinity,
                   height: 37,
                   decoration: BoxDecoration(
-                    color: dropdownColor,
-                    borderRadius:
-                    BorderRadius.circular(8),
+                      color: dropdownColor,
+                      borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
-                            color:background.withOpacity(1),
+                            color: background.withOpacity(1),
                             spreadRadius: 3,
-                            blurRadius: 3
-                        )
-                      ]
-                  ),
+                            blurRadius: 3)
+                      ]),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -104,224 +91,204 @@ class _Add_ExpensesState extends State<Add_Expenses> {
                           height: 37,
                           width: 40,
                           decoration: BoxDecoration(
-                            color: background,
-                            borderRadius:
-                            BorderRadius.circular(8),
+                              color: background,
+                              borderRadius: BorderRadius.circular(8),
                               boxShadow: [
                                 BoxShadow(
-                                    color:background.withOpacity(1),
+                                    color: background.withOpacity(1),
                                     spreadRadius: 3,
-                                    blurRadius: 3
-                          )
-                              ]
-                          ),
-
+                                    blurRadius: 3)
+                              ]),
                           child: const Icon(
-                              Icons.calendar_today_outlined,
-                              size: 16,
-                              color: dropdowniconColor,
+                            Icons.calendar_today_outlined,
+                            size: 16,
+                            color: dropdowniconColor,
                           ),
                         ),
                         const SizedBox(width: 20),
                         Text(
                           "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}",
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
-                            color: dateColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 11
-                          ),
+                              fontFamily: 'Poppins',
+                              color: dateColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 11),
                         )
                       ],
                     ),
                   ),
                 ),
               ),
-
-              SizedBox(height:25),
-
-              Text(
+              const SizedBox(height: 25),
+              const Text(
                 'Vehicle type',
-                 style: (
-                    TextStyle(
-                        fontSize: 12,
-                        fontWeight:FontWeight.w500
-                    )
-                ),),
-              SizedBox(height:10),
+                style: (TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+              ),
+              const SizedBox(height: 10),
               Container(
                 width: double.infinity,
                 height: 37,
                 decoration: BoxDecoration(
-                  color: background,
-                  borderRadius:
-                  BorderRadius.circular(8),
+                    color: background,
+                    borderRadius: BorderRadius.circular(8),
                     boxShadow: [
-                    BoxShadow(
-                        color:background.withOpacity(1),
-                        spreadRadius: 3,
-                        blurRadius: 3
-                    )
-                    ]
-                ),
-                child:  Padding(
-                  padding: const EdgeInsets.only(left: 10,right: 23),
+                      BoxShadow(
+                          color: background.withOpacity(1),
+                          spreadRadius: 3,
+                          blurRadius: 3)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 23),
                   child: DropdownButton<String>(
                     isExpanded: true,
                     dropdownColor: background,
-                    underline: SizedBox(),
-                    hint: Text('Select your vehicle type'),
+                    underline: const SizedBox(),
+                    hint: const Text('Select your vehicle type'),
                     value: dropdownvalue,
                     iconSize: 15,
                     iconEnabledColor: dropdowniconColor,
-                    onChanged: (newValue)
-                    {
-                      setState(()
-                      {
+                    onChanged: (newValue) {
+                      setState(() {
                         dropdownvalue = newValue!;
-                      }
-                      );
+                      });
                     },
-                    items:<String>['Bike', 'Car', 'Bus', 'Flight']
-                          .map<DropdownMenuItem<String>>((String value){
+                    items: <String>['Bike', 'Car', 'Bus', 'Flight']
+                        .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem(
                         alignment: Alignment.centerLeft,
                         value: value,
                         child: Text(
-                                    value,
-                                    style: TextStyle(
-                                            fontSize: 11,
-                                            color:dateColor
-                        ),
+                          value,
+                          style:
+                              const TextStyle(fontSize: 11, color: dateColor),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
               ),
-             SizedBox(height: 25,),
-             Row(
-               children: [
-               Expanded(
-                 child: Column( 
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Text(
-                       'Kilometers',
-                       style: (
-                           TextStyle(
-                               fontSize: 12,
-                               fontWeight:FontWeight.w500
-                           )
-                       ),),
-                     SizedBox(height: 10,),
-                     Container(
-                       height: 37,
-                       width: double.infinity,
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(5),
-                           color:dropdownColor,
-                           boxShadow: [
-                             BoxShadow(
-                                 color:background.withOpacity(1),
-                                 spreadRadius: 3,
-                                 blurRadius: 3
-                             )
-                           ]
-                       ),
-                       child: Padding(
-                         padding: const EdgeInsets.all(10),
-                         child: TextFormField(
-                           controller: Kms,
-                           cursorColor:dateColor,
-                           decoration: InputDecoration(
-                             contentPadding:  EdgeInsets.fromLTRB(5, 15,10,10),
-                             hintText: 'Enter total kilometeres',
-                             border: InputBorder.none,
-                             hintStyle:TextStyle(
-                                 color: dropdowniconColor,
-                                 fontSize: 11,
-                                 fontWeight: FontWeight.w500
-                             ),
-                           ),
-                         ),
-                       ),
-                     )
-                   ],
-                 ),
-               ),
-                 SizedBox(width: 20,),
-                 Expanded(
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text(
-                         'Total amount',
-                         style: (
-                             TextStyle(
-                                 fontSize: 12,
-                                 fontWeight:FontWeight.w500
-                             )
-                         ),),
-                       SizedBox(height: 10,),
-                       Container(
-                         height: 37,
-                         width:double.infinity,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(5),
-                             color:dropdownColor,
-                             boxShadow: [
-                               BoxShadow(
-                                   color:background.withOpacity(1),
-                                   spreadRadius: 3,
-                                   blurRadius: 3
-                               )
-                             ]
-                         ),
-                         child: Padding(
-                           padding: const EdgeInsets.all(10),
-                           child: TextFormField(
-                             controller: totalAmount,
-                             cursorColor:dateColor,
-                             decoration: InputDecoration(
-                               hintText: 'Enter total amount',
-                               contentPadding:  EdgeInsets.fromLTRB(5, 15,10,10),
-                               border: InputBorder.none,
-                               hintStyle:TextStyle(
-                                   color: dropdowniconColor,
-                                   fontSize: 11,
-                                   fontWeight: FontWeight.w500
-                               ),
-                             ),
-                           ),
-                         ),
-                       )
-                     ],
-                   ),
-                 )
-               ],
-             ),
-              SizedBox(height: 25,),
+              const SizedBox(
+                height: 25,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Kilometers',
+                          style: (TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: background.withOpacity(1),
+                                    spreadRadius: 3,
+                                    blurRadius: 3)
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: kms,
+                              cursorColor: dateColor,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(5, 15, 10, 10),
+                                hintText: 'Enter total kilometeres',
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(
+                                    color: dropdowniconColor,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Total amount',
+                          style: (TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: background.withOpacity(1),
+                                    spreadRadius: 3,
+                                    blurRadius: 3)
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: totalAmount,
+                              cursorColor: dateColor,
+                              decoration: const InputDecoration(
+                                hintText: 'Enter total amount',
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(5, 15, 10, 10),
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(
+                                    color: dropdowniconColor,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 25,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Expenses()));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Expenses()));
                   },
                   child: Container(
                     width: double.infinity,
                     height: 43,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: textcolor
-                    ),
-                    child: Center(
+                        color: textcolor),
+                    child: const Center(
                       child: Text(
                         'Submit',
-                        style: TextStyle(
-                            color: dropdownColor,
-                            fontSize: 12
-                        ),
+                        style: TextStyle(color: dropdownColor, fontSize: 12),
                       ),
                     ),
                   ),
@@ -330,7 +297,6 @@ class _Add_ExpensesState extends State<Add_Expenses> {
             ],
           ),
         ),
-
       ),
     );
   }

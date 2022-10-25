@@ -9,7 +9,7 @@ class ApiService {
   static Future<String?> login(
       {required String mobile, required String password}) async {
     try {
-      final form = json.encode({
+      final body = json.encode({
         "mobile": mobile,
         "password": password,
       });
@@ -17,13 +17,13 @@ class ApiService {
       final response = await http.post(
         Uri.parse(ApiEndpoints.login),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: form,
+        body: body,
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        log(response.body.toString(), name: 'Response');
+      log(response.body.toString(), name: 'Response');
 
-        final _result = json.decode(response.body) as Map;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map _result = json.decode(response.body) as Map;
         final _status = _result['sts'];
 
         if (_status == '01') {
@@ -38,7 +38,7 @@ class ApiService {
         return null;
       }
     } catch (e) {
-      log(e.toString());
+      log('', error: e.toString());
       return null;
     }
   }
@@ -53,14 +53,14 @@ class ApiService {
         Uri.parse(ApiEndpoints.districts),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlRDIiwiaWF0IjoxNjY2MzUxMjIxLCJleHAiOjE2NjYzOTQ0MjF9.UmdqcYipFP0CXrlhKYmhoIBFpSABIxF_Q6sE369FQ1c'
+          'Authorization': 'Bearer ${AccessToken.token}'
         },
         body: form,
       );
 
+      log(response.body.toString(), name: 'Response');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        log(response.body.toString(), name: 'Response');
         final _results = json.decode(response.body) as Map;
         final _districts = _results['districts'] as List;
         return _districts;
@@ -68,6 +68,116 @@ class ApiService {
         log('Error Occured!');
         throw Exception;
       }
+    } catch (e) {
+      log(e.toString());
+      throw Exception;
+    }
+  }
+
+  //==================== Get States ====================
+  static Future<List<dynamic>> states({required String query}) async {
+    try {
+      final form = json.encode({"limit": "100", "search": query});
+
+      final response = await http.post(
+        Uri.parse(ApiEndpoints.states),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AccessToken.token}'
+        },
+        body: form,
+      );
+
+      log(response.body.toString(), name: 'Response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final _results = json.decode(response.body) as Map;
+        final _districts = _results['states'] as List;
+        return _districts;
+      } else {
+        log('Error Occured!');
+        throw Exception;
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception;
+    }
+  }
+
+  //==================== Get Services ====================
+  static Future<List<dynamic>> services({required String query}) async {
+    try {
+      final form = json.encode({"limit": "100", "search": query});
+
+      final response = await http.post(
+        Uri.parse(ApiEndpoints.services),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AccessToken.token}'
+        },
+        body: form,
+      );
+
+      log(response.body.toString(), name: 'Response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final _results = json.decode(response.body) as Map;
+        final _districts = _results['services'] as List;
+        return _districts;
+      } else {
+        log('Error Occured!');
+        throw Exception;
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception;
+    }
+  }
+
+  //==================== Create Leads ====================
+  static Future createLeads({
+    required String name,
+    required String companyName,
+    required String number,
+    required List services,
+    required String stateId,
+    required String districtId,
+  }) async {
+    try {
+      final form = json.encode({
+        "name": name,
+        "mobile": number,
+        "whatsapp": number,
+        "company": companyName,
+        "services": services,
+        "telle_desc": "description",
+        "state_id": stateId,
+        "district_id": districtId,
+        "address": "",
+        "telle_id": "5",
+        "hr_id": "11",
+        "status": "New"
+      });
+
+      final response = await http.post(
+        Uri.parse(ApiEndpoints.createLeads),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AccessToken.token}'
+        },
+        body: form,
+      );
+
+      log(response.body.toString(), name: 'Response');
+
+      // if (response.statusCode == 200 || response.statusCode == 201) {
+      //   final _results = json.decode(response.body) as Map;
+      //   final _districts = _results['services'] as List;
+      //   return _districts;
+      // } else {
+      //   log('Error Occured!');
+      //   throw Exception;
+      // }
     } catch (e) {
       log(e.toString());
       throw Exception;

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.erebsindia.seclobagent.seclob_agent">
+    <uses-permission android:name="android.permission.INTERNET" /> 
    <application
         android:label="seclob_agent"
         android:name="${applicationName}"

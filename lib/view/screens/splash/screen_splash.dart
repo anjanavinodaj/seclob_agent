@@ -23,7 +23,7 @@ class ScreenSplash extends StatelessWidget {
 
 // -- After Splash Screen --
   Future<void> afterSplash(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 

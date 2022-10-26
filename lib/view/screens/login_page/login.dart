@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:seclob_agent/core/token.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/editable_box.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
@@ -118,6 +119,8 @@ class _LoginState extends State<Login> {
                         prefs.setBool('login', true);
 
                         prefs.setString('token', token);
+
+                        AccessToken.token = token;
 
                         Navigator.push(
                           context,

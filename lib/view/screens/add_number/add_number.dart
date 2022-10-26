@@ -2,10 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:seclob_agent/core/colors.dart';
 import 'package:seclob_agent/services/api_service.dart';
-
-import '../../providers/colors.dart';
+import 'package:seclob_agent/view/providers/colors.dart';
 
 class AddNumber extends StatefulWidget {
   const AddNumber({Key? key}) : super(key: key);

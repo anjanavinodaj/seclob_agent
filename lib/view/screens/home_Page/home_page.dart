@@ -9,12 +9,13 @@ import '../../providers/colors.dart';
 import '../Expenses/expenses.dart';
 import '../Tickets/tickets.dart';
 import '../add_number/add_number.dart';
-import '../dashboard_Screens/pending.dart';
+import '../dashboard_Screens/screen_manage_leads.dart';
 import '../profile/profile.dart';
 import '../work_report/work_reports.dart';
 
-final _listLeadsProvider = FutureProvider<List>((ref) async {
-  return ApiService.getLeads(query: '', status: '');
+final _listLeadsProvider =
+    FutureProvider.family.autoDispose<List, BuildContext>((ref, context) async {
+  return ApiService.getLeads(context, query: '', status: '');
 });
 
 class HomePage extends ConsumerWidget {
@@ -22,7 +23,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _listLeads = ref.watch(_listLeadsProvider);
+    final _listLeads = ref.watch(_listLeadsProvider(context));
 
     return SafeArea(
         child: Scaffold(
@@ -68,7 +69,10 @@ class HomePage extends ConsumerWidget {
                         final List<Map> rescheduledLeads = [];
 
                         for (Map lead in data) {
-                          if (lead['status'] == 'New') pendingLeads.add(lead);
+                          if (lead['status'] == 'Pending' ||
+                              lead['status'] == 'New') {
+                            pendingLeads.add(lead);
+                          }
                           if (lead['status'] == 'Completed') {
                             completedLeads.add(lead);
                           }
@@ -100,7 +104,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: pendingLeads,
                                         title: 'Pending',
                                       ),
@@ -120,7 +124,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: completedLeads,
                                         title: 'Completed',
                                       ),
@@ -140,7 +144,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: rejectedLeads,
                                         title: 'Rejected',
                                       ),
@@ -160,7 +164,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: notReachedLeads,
                                         title: 'Not Reachable',
                                       ),
@@ -180,7 +184,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: deletedLeads,
                                         title: 'Deleted',
                                       ),
@@ -200,7 +204,7 @@ class HomePage extends ConsumerWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PendingPage(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: rescheduledLeads,
                                         title: 'Rescheduled',
                                       ),

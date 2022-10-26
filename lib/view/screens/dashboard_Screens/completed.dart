@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import '../../providers/colors.dart';
 
-final _pendingProvider = FutureProvider<List>((ref) async {
-  return ApiService.getLeads(query: '', status: 'completed');
+final _pendingProvider =
+    FutureProvider.family<List, BuildContext>((ref, context) async {
+  return ApiService.getLeads(context, query: '', status: 'completed');
 });
 
 class Completed extends ConsumerStatefulWidget {
@@ -41,7 +42,7 @@ class _CompletedState extends ConsumerState<Completed> {
 
   @override
   Widget build(BuildContext context) {
-    final _completed = ref.watch(_pendingProvider);
+    final _completed = ref.watch(_pendingProvider(context));
 
     return Scaffold(
       appBar: AppBar(

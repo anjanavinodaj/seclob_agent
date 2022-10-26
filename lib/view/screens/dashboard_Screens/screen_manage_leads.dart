@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seclob_agent/core/utils/converter.dart';
 import 'package:seclob_agent/services/api_service.dart';
-import '../../providers/colors.dart';
+import 'package:seclob_agent/view/providers/colors.dart';
+import 'package:seclob_agent/view/screens/home_Page/home_page.dart';
 
-class PendingPage extends ConsumerStatefulWidget {
-  const PendingPage({required this.title, required this.leads, Key? key})
-      : super(key: key);
+class ScreenManageLeads extends ConsumerStatefulWidget {
+  const ScreenManageLeads({
+    required this.title,
+    required this.leads,
+    Key? key,
+  }) : super(key: key);
 
   final List<Map> leads;
   final String title;
@@ -15,7 +19,7 @@ class PendingPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _PendigPageState();
 }
 
-class _PendigPageState extends ConsumerState<PendingPage> {
+class _PendigPageState extends ConsumerState<ScreenManageLeads> {
   TextEditingController search = TextEditingController();
   String dropdownvalue = 'Pending';
 
@@ -301,10 +305,11 @@ class _PendigPageState extends ConsumerState<PendingPage> {
                                     Text(
                                       lead['mobile'],
                                       style: const TextStyle(
-                                          fontSize: 10,
-                                          color: listviewtextColor,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w500),
+                                        fontSize: 10,
+                                        color: listviewtextColor,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                     const SizedBox(height: 2),
                                     const SizedBox(
@@ -388,10 +393,74 @@ class _PendigPageState extends ConsumerState<PendingPage> {
                                             value: widget.title,
                                             iconEnabledColor: dropdownColor,
                                             onChanged: (newStatus) async {
-                                              await ApiService.updateLeadStatus(
-                                                id: lead['id'].toString(),
-                                                status: newStatus!,
-                                              );
+                                              if (newStatus != widget.title) {
+                                                if (newStatus != 'Delete') {
+                                                  final bool status =
+                                                      await ApiService
+                                                          .updateLeadStatus(
+                                                    id: lead['id'].toString(),
+                                                    status: newStatus!,
+                                                  );
+
+                                                  if (status) {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (ctx) =>
+                                                              const HomePage()),
+                                                    );
+                                                  }
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title:
+                                                          const Text('Delete'),
+                                                      content: const Text(
+                                                          'Are you sure you want to delete this lead?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: const Text(
+                                                              'Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            final bool status =
+                                                                await ApiService
+                                                                    .updateLeadStatus(
+                                                              id: lead['id']
+                                                                  .toString(),
+                                                              status:
+                                                                  newStatus!,
+                                                            );
+
+                                                            if (status) {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (ctx) =>
+                                                                            const HomePage()),
+                                                              );
+                                                            }
+                                                          },
+                                                          child: const Text(
+                                                            'Delete',
+                                                            style: TextStyle(
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                }
+                                              }
                                             },
                                             items: <String>[
                                               'Pending',

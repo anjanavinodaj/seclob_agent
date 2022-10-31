@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:seclob_agent/core/endpoints.dart';
 import 'package:seclob_agent/core/token.dart';
-import 'package:seclob_agent/view/screens/login_page/login.dart';
+import 'package:seclob_agent/view/screens/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
@@ -140,7 +140,7 @@ class ApiService {
   }
 
   //==================== Create Leads ====================
-  static Future createLeads({
+  static Future<String> createLeads({
     required String name,
     required String companyName,
     required String number,
@@ -175,14 +175,9 @@ class ApiService {
 
       log(response.body.toString(), name: 'Response');
 
-      // if (response.statusCode == 200 || response.statusCode == 201) {
-      //   final _results = json.decode(response.body) as Map;
-      //   final _districts = _results['services'] as List;
-      //   return _districts;
-      // } else {
-      //   log('Error Occured!');
-      //   throw Exception;
-      // }
+      final _results = json.decode(response.body) as Map;
+      final msg = _results['msg'] as String;
+      return msg;
     } catch (e) {
       log(e.toString());
       throw Exception;

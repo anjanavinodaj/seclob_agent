@@ -3,23 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/menu_box.dart';
+import 'package:seclob_agent/view/providers/colors.dart';
 import 'package:seclob_agent/view/providers/path.dart';
-
-import '../../providers/colors.dart';
-import '../Expenses/expenses.dart';
-import '../Tickets/tickets.dart';
-import '../add_number/add_number.dart';
-import '../dashboard_Screens/screen_manage_leads.dart';
-import '../profile/profile.dart';
-import '../work_report/work_reports.dart';
+import 'package:seclob_agent/view/screens/Expenses/expenses.dart';
+import 'package:seclob_agent/view/screens/Tickets/tickets.dart';
+import 'package:seclob_agent/view/screens/add_number/add_number.dart';
+import 'package:seclob_agent/view/screens/dashboard_screens/screen_manage_leads.dart';
+import 'package:seclob_agent/view/screens/profile/screen_profile.dart';
+import 'package:seclob_agent/view/screens/work_report/work_reports.dart';
 
 final _listLeadsProvider =
     FutureProvider.family.autoDispose<List, BuildContext>((ref, context) async {
   return ApiService.getLeads(context, query: '', status: '');
 });
 
-class HomePage extends ConsumerWidget {
-  const HomePage({Key? key}) : super(key: key);
+class ScreenHome extends ConsumerWidget {
+  const ScreenHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,17 +55,15 @@ class HomePage extends ConsumerWidget {
                         color: textcolor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     _listLeads.when(
                       data: (data) {
                         final List<Map> pendingLeads = [];
                         final List<Map> completedLeads = [];
-                        final List<Map> rejectedLeads = [];
-                        final List<Map> notReachedLeads = [];
+                        final List<Map> cancelledLeads = [];
+                        final List<Map> notRespondingLeads = [];
                         final List<Map> deletedLeads = [];
-                        final List<Map> rescheduledLeads = [];
+                        final List<Map> followingLeads = [];
 
                         for (Map lead in data) {
                           if (lead['status'] == 'Pending' ||
@@ -76,17 +73,17 @@ class HomePage extends ConsumerWidget {
                           if (lead['status'] == 'Completed') {
                             completedLeads.add(lead);
                           }
-                          if (lead['status'] == 'Rejected') {
-                            rejectedLeads.add(lead);
+                          if (lead['status'] == 'Cancelled') {
+                            cancelledLeads.add(lead);
                           }
-                          if (lead['status'] == 'Not Reachable') {
-                            notReachedLeads.add(lead);
+                          if (lead['status'] == 'Not Responding') {
+                            notRespondingLeads.add(lead);
                           }
                           if (lead['status'] == 'Deleted') {
                             deletedLeads.add(lead);
                           }
-                          if (lead['status'] == 'Rescheduled') {
-                            rescheduledLeads.add(lead);
+                          if (lead['status'] == 'Following') {
+                            followingLeads.add(lead);
                           }
                         }
 
@@ -145,15 +142,15 @@ class HomePage extends ConsumerWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenManageLeads(
-                                        leads: rejectedLeads,
-                                        title: 'Rejected',
+                                        leads: cancelledLeads,
+                                        title: 'Cancelled',
                                       ),
                                     ),
                                   );
                                 },
                                 child: MenuBox(
-                                  count: rejectedLeads.length.toString(),
-                                  title: "Rejected",
+                                  count: cancelledLeads.length.toString(),
+                                  title: "Cancelled",
                                   bgColor: boxcolor3,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor3,
@@ -165,15 +162,15 @@ class HomePage extends ConsumerWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenManageLeads(
-                                        leads: notReachedLeads,
-                                        title: 'Not Reachable',
+                                        leads: notRespondingLeads,
+                                        title: 'Not Responding',
                                       ),
                                     ),
                                   );
                                 },
                                 child: MenuBox(
-                                  count: notReachedLeads.length.toString(),
-                                  title: "Not Reachable",
+                                  count: notRespondingLeads.length.toString(),
+                                  title: "Not Responding",
                                   bgColor: boxcolor4,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor4,
@@ -205,15 +202,15 @@ class HomePage extends ConsumerWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenManageLeads(
-                                        leads: rescheduledLeads,
-                                        title: 'Rescheduled',
+                                        leads: followingLeads,
+                                        title: 'Following',
                                       ),
                                     ),
                                   );
                                 },
                                 child: MenuBox(
-                                  count: rescheduledLeads.length.toString(),
-                                  title: "Rescheduled",
+                                  count: followingLeads.length.toString(),
+                                  title: "Following",
                                   bgColor: boxcolor6,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor1,
@@ -427,7 +424,7 @@ class BottomNavBar extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                          builder: (context) => const ScreenHome()));
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -22,6 +22,8 @@ class _AddNumberState extends State<AddNumber> {
   final TextEditingController stateController = TextEditingController();
   final ValueNotifier<List<Map>> servicesNotifier = ValueNotifier([]);
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String stateId = '';
   String districtId = '';
   List<int> servicesIds = [];
@@ -40,474 +42,535 @@ class _AddNumberState extends State<AddNumber> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: const Icon(
-            Icons.arrow_back,
-            size: 20,
-          ),
+          child: const Icon(Icons.arrow_back, size: 20),
         ),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          child: ListView(children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
+          child: ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Name',
-                      style: (TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500)),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 37,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: dropdownColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: background.withOpacity(1),
-                                spreadRadius: 3,
-                                blurRadius: 3)
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: nameController,
-                          cursorColor: dateColor,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(5, 15, 10, 10),
-                            border: InputBorder.none,
-                            hintText: 'Enter your name',
-                            hintStyle: TextStyle(
-                                color: dropdowniconColor,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500),
-                          ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Name',
+                          style: (TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500)),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Company name',
-                      style: (TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500)),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 37,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: dropdownColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: background.withOpacity(1),
-                                spreadRadius: 3,
-                                blurRadius: 3)
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: companyName,
-                          cursorColor: dateColor,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(5, 15, 10, 10),
-                            border: InputBorder.none,
-                            hintText: 'Enter company name',
-                            hintStyle: TextStyle(
-                                color: dropdowniconColor,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500),
-                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Contact number',
-                      style: (TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500)),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 37,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: dropdownColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: background.withOpacity(1),
-                                spreadRadius: 3,
-                                blurRadius: 3)
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: TextFormField(
-                          controller: contactNo,
-                          keyboardType: TextInputType.phone,
-                          cursorColor: dateColor,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(5, 15, 10, 10),
-                            border: InputBorder.none,
-                            hintText: 'Enter contact number',
-                            hintStyle: TextStyle(
-                                color: dropdowniconColor,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'State',
-                            style: (TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w500)),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 37,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: dropdownColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: background.withOpacity(1),
-                                      spreadRadius: 3,
-                                      blurRadius: 3)
-                                ]),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TypeAheadField(
-                                textFieldConfiguration: TextFieldConfiguration(
-                                    controller: stateController,
-                                    style: const TextStyle(fontSize: 11),
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      border: InputBorder.none,
-                                      hintText: 'Select state name',
-                                      hintStyle: TextStyle(
-                                          color: dropdowniconColor,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                itemBuilder: (contex, values) {
-                                  final states = values as Map;
-                                  return ListTile(
-                                    title: Text(
-                                      states['label'],
-                                      style: const TextStyle(fontSize: 11),
-                                    ),
-                                  );
-                                },
-                                noItemsFoundBuilder: (_) {
-                                  return const ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      'No state found!',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        color: kColorDim,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onSuggestionSelected: (selected) {
-                                  final state = selected as Map;
-                                  stateController.text = state['label'];
-                                  stateId = state['id'];
-                                },
-                                suggestionsCallback: (query) async {
-                                  return await ApiService.states(
-                                    query: query,
-                                  );
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'District',
-                            style: (TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            )),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 37,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: dropdownColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: background.withOpacity(1),
-                                      spreadRadius: 3,
-                                      blurRadius: 3)
-                                ]),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TypeAheadField(
-                                textFieldConfiguration: TextFieldConfiguration(
-                                    controller: districtController,
-                                    style: const TextStyle(fontSize: 11),
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.all(10),
-                                      border: InputBorder.none,
-                                      hintText: 'Select district name',
-                                      hintStyle: TextStyle(
-                                          color: dropdowniconColor,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                itemBuilder: (contex, values) {
-                                  final districts = values as Map;
-                                  return ListTile(
-                                    title: Text(
-                                      districts['label'],
-                                      style: const TextStyle(fontSize: 11),
-                                    ),
-                                  );
-                                },
-                                noItemsFoundBuilder: (_) {
-                                  return const ListTile(
-                                    dense: true,
-                                    title: Text(
-                                      'No district found!',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        color: kColorDim,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onSuggestionSelected: (selected) {
-                                  final district = selected as Map;
-                                  districtController.text = district['label'];
-                                  districtId = district['id'];
-                                },
-                                suggestionsCallback: (query) async {
-                                  return await ApiService.districts(
-                                    query: query,
-                                  );
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Service type',
-                      style: (TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500)),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 37,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: dropdownColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: background.withOpacity(1),
-                              spreadRadius: 3,
-                              blurRadius: 3,
-                            )
-                          ]),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                              controller: servicesController,
-                              style: const TextStyle(fontSize: 11),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: background.withOpacity(1),
+                                    spreadRadius: 3,
+                                    blurRadius: 3)
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: nameController,
+                              cursorColor: dateColor,
                               decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(10),
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(5, 15, 10, 10),
+                                  border: InputBorder.none,
+                                  hintText: 'Enter your name',
+                                  hintStyle: TextStyle(
+                                      color: dropdowniconColor,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500),
+                                  errorBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
+                                  errorStyle: TextStyle(fontSize: 0.001)),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'This field is required*';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Company name',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: background.withOpacity(1),
+                                  spreadRadius: 3,
+                                  blurRadius: 3,
+                                )
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: companyName,
+                              cursorColor: dateColor,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(5, 15, 10, 10),
                                 border: InputBorder.none,
-                                hintText:
-                                    'Select service type (eg : service, rent a car)',
+                                hintText: 'Enter company name',
                                 hintStyle: TextStyle(
                                     color: dropdowniconColor,
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500),
-                              )),
-                          itemBuilder: (contex, values) {
-                            final districts = values as Map;
-                            return ListTile(
-                              title: Text(
-                                districts['label'],
-                                style: const TextStyle(fontSize: 11),
-                              ),
-                            );
-                          },
-                          noItemsFoundBuilder: (_) {
-                            return const ListTile(
-                              dense: true,
-                              title: Text(
-                                'No services found!',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: kColorDim,
-                                ),
-                              ),
-                            );
-                          },
-                          onSuggestionSelected: (selected) {
-                            servicesController.clear();
-                            final service = selected as Map;
-
-                            for (Map element in servicesNotifier.value) {
-                              if (element['id'] == service['id']) {
-                                return;
-                              }
-                            }
-
-                            servicesNotifier.value = [
-                              ...servicesNotifier.value,
-                              service
-                            ];
-
-                            servicesIds.add(service['id']);
-                          },
-                          suggestionsCallback: (query) async {
-                            return await ApiService.services(
-                              query: query,
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .05,
-                  child: ValueListenableBuilder(
-                    valueListenable: servicesNotifier,
-                    builder: (context, services, _) {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final service = servicesNotifier.value[index];
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  FittedBox(child: Text(service['label'])),
-                                  const SizedBox(width: 5),
-                                  InkWell(
-                                    onTap: () {
-                                      servicesNotifier.value.remove(service);
-                                      servicesNotifier.notifyListeners();
-                                      servicesIds.remove(service['id']);
-                                    },
-                                    child: const FittedBox(
-                                      child: Icon(
-                                        Icons.close,
-                                        color: Color(0xFF757575),
-                                      ),
-                                    ),
-                                  )
-                                ],
                               ),
                             ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Contact number',
+                          style: (TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: background.withOpacity(1),
+                                    spreadRadius: 3,
+                                    blurRadius: 3)
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextFormField(
+                              controller: contactNo,
+                              keyboardType: TextInputType.phone,
+                              cursorColor: dateColor,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(5, 15, 10, 10),
+                                border: InputBorder.none,
+                                hintText: 'Enter contact number',
+                                hintStyle: TextStyle(
+                                    color: dropdowniconColor,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500),
+                                errorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red)),
+                                errorStyle: TextStyle(fontSize: 0.001),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'This field is required*';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'State',
+                                style: (TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 37,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: dropdownColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: background.withOpacity(1),
+                                          spreadRadius: 3,
+                                          blurRadius: 3)
+                                    ]),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: TypeAheadField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                            controller: stateController,
+                                            style:
+                                                const TextStyle(fontSize: 11),
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
+                                              border: InputBorder.none,
+                                              hintText: 'Select state name',
+                                              hintStyle: TextStyle(
+                                                  color: dropdowniconColor,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w500),
+                                            )),
+                                    itemBuilder: (contex, values) {
+                                      final states = values as Map;
+                                      return ListTile(
+                                        title: Text(
+                                          states['label'],
+                                          style: const TextStyle(fontSize: 11),
+                                        ),
+                                      );
+                                    },
+                                    noItemsFoundBuilder: (_) {
+                                      return const ListTile(
+                                        dense: true,
+                                        title: Text(
+                                          'No state found!',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color: kColorDim,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    onSuggestionSelected: (selected) {
+                                      final state = selected as Map;
+                                      stateController.text = state['label'];
+                                      stateId = state['id'];
+                                    },
+                                    suggestionsCallback: (query) async {
+                                      return await ApiService.states(
+                                        query: query,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'District',
+                                style: (TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 37,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: dropdownColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: background.withOpacity(1),
+                                          spreadRadius: 3,
+                                          blurRadius: 3)
+                                    ]),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: TypeAheadField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                            controller: districtController,
+                                            style:
+                                                const TextStyle(fontSize: 11),
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
+                                              border: InputBorder.none,
+                                              hintText: 'Select district name',
+                                              hintStyle: TextStyle(
+                                                  color: dropdowniconColor,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w500),
+                                            )),
+                                    itemBuilder: (contex, values) {
+                                      final districts = values as Map;
+                                      return ListTile(
+                                        title: Text(
+                                          districts['label'],
+                                          style: const TextStyle(fontSize: 11),
+                                        ),
+                                      );
+                                    },
+                                    noItemsFoundBuilder: (_) {
+                                      return const ListTile(
+                                        dense: true,
+                                        title: Text(
+                                          'No district found!',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color: kColorDim,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    onSuggestionSelected: (selected) {
+                                      final district = selected as Map;
+                                      districtController.text =
+                                          district['label'];
+                                      districtId = district['id'];
+                                    },
+                                    suggestionsCallback: (query) async {
+                                      return await ApiService.districts(
+                                        query: query,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Service type',
+                          style: (TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w500)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 37,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: dropdownColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: background.withOpacity(1),
+                                  spreadRadius: 3,
+                                  blurRadius: 3,
+                                )
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  controller: servicesController,
+                                  style: const TextStyle(fontSize: 11),
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    border: InputBorder.none,
+                                    hintText:
+                                        'Select service type (eg : service, rent a car)',
+                                    hintStyle: TextStyle(
+                                        color: dropdowniconColor,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                              itemBuilder: (contex, values) {
+                                final districts = values as Map;
+                                return ListTile(
+                                  title: Text(
+                                    districts['label'],
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                );
+                              },
+                              noItemsFoundBuilder: (_) {
+                                return const ListTile(
+                                  dense: true,
+                                  title: Text(
+                                    'No services found!',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: kColorDim,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onSuggestionSelected: (selected) {
+                                servicesController.clear();
+                                final service = selected as Map;
+
+                                for (Map element in servicesNotifier.value) {
+                                  if (element['id'] == service['id']) {
+                                    return;
+                                  }
+                                }
+
+                                servicesNotifier.value = [
+                                  ...servicesNotifier.value,
+                                  service
+                                ];
+
+                                servicesIds.add(service['id']);
+                              },
+                              suggestionsCallback: (query) async {
+                                return await ApiService.services(
+                                  query: query,
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .05,
+                      child: ValueListenableBuilder(
+                        valueListenable: servicesNotifier,
+                        builder: (context, services, _) {
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final service = servicesNotifier.value[index];
+                              return Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FittedBox(child: Text(service['label'])),
+                                      const SizedBox(width: 5),
+                                      InkWell(
+                                        onTap: () {
+                                          servicesNotifier.value
+                                              .remove(service);
+                                          servicesNotifier.notifyListeners();
+                                          servicesIds.remove(service['id']);
+                                        },
+                                        child: const FittedBox(
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Color(0xFF757575),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: servicesNotifier.value.length,
                           );
                         },
-                        itemCount: servicesNotifier.value.length,
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 37),
-                  child: InkWell(
-                    onTap: () async {
-                      await ApiService.createLeads(
-                        name: nameController.text,
-                        companyName: companyName.text,
-                        number: contactNo.text,
-                        services: servicesIds,
-                        stateId: stateId,
-                        districtId: districtId,
-                      );
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 37),
+                      child: InkWell(
+                        onTap: () async {
+                          final _formState = _formKey.currentState!;
 
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 43,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: textcolor),
-                      child: const Center(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(color: dropdownColor, fontSize: 12),
+                          if (_formState.validate()) {
+                            final msg = await ApiService.createLeads(
+                              name: nameController.text,
+                              companyName: companyName.text,
+                              number: contactNo.text,
+                              services: servicesIds,
+                              stateId: stateId,
+                              districtId: districtId,
+                            );
+
+                            if (msg == 'Invalid Mobile Number') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Please enter valid mobile number'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Lead created successfully'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please fill required fields'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 43,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: textcolor),
+                          child: const Center(
+                            child: Text(
+                              'Submit',
+                              style:
+                                  TextStyle(color: dropdownColor, fontSize: 12),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

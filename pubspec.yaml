@@ -31,11 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_native_splash: ^2.2.9
+  flutter_phone_direct_caller: ^2.1.1
   flutter_riverpod: ^2.0.2
   flutter_svg: ^1.1.5
   flutter_typeahead: ^4.1.1
   google_fonts: ^3.0.1
   intl: ^0.17.0
+  responsive_sizer: ^3.1.1
   searchfield: ^0.7.0
   shared_preferences: ^2.0.15
 

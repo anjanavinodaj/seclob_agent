@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seclob_agent/core/images.dart';
 import 'package:seclob_agent/core/token.dart';
-import 'package:seclob_agent/view/screens/home_Page/home_page.dart';
-import 'package:seclob_agent/view/screens/login_page/login.dart';
+import 'package:seclob_agent/view/screens/home/screen_home.dart';
+import 'package:seclob_agent/view/screens/login/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSplash extends StatelessWidget {
@@ -35,7 +35,7 @@ class ScreenSplash extends StatelessWidget {
 
     if (isLogin == true) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const HomePage()));
+          context, MaterialPageRoute(builder: (_) => const ScreenHome()));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (_) => const Login()));
     }

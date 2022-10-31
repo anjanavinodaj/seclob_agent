@@ -153,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.9"
+  flutter_phone_direct_caller:
+    dependency: "direct main"
+    description:
+      name: flutter_phone_direct_caller
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -366,6 +373,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  responsive_sizer:
+    dependency: "direct main"
+    description:
+      name: responsive_sizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   riverpod:
     dependency: transitive
     description:

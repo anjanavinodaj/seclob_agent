@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../providers/colors.dart';
-import '../home_Page/home_page.dart';
+import '../home/screen_home.dart';
 
 class Tickets extends StatefulWidget {
   const Tickets({Key? key}) : super(key: key);

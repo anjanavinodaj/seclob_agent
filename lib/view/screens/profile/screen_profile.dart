@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../providers/colors.dart';
-import '../../providers/path.dart';
-import '../home_Page/home_page.dart';
+import 'package:seclob_agent/view/providers/colors.dart';
+import 'package:seclob_agent/view/providers/path.dart';
+import 'package:seclob_agent/view/screens/home/screen_home.dart';
+import 'package:seclob_agent/view/screens/leave_application/screen_leave_application.dart';
+import 'package:seclob_agent/view/screens/login/screen_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -30,8 +32,8 @@ class _ProfileState extends State<Profile> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Expanded(
-                child: Column(children: [
+              child: Column(
+                children: [
                   Container(
                     height: 101,
                     width: double.infinity,
@@ -313,14 +315,65 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                       const SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => ScreenLeaveApplication()));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: const [
+                                CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: Color(0xffC9C9C9),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Icon(
+                                        Icons.description_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  'Leave Application',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: textcolor),
+                                ),
+                              ],
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 15,
+                              color: textcolor,
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
                         height: 50,
                       ),
                       const Text(
                         'My Account',
                         style: TextStyle(
-                            color: dropdowniconColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
+                          color: dropdowniconColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(
                         height: 15,
@@ -328,28 +381,46 @@ class _ProfileState extends State<Profile> {
                       const Text(
                         'Change Password',
                         style: TextStyle(
-                            color: notReachableStatuscolor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
+                          color: notReachableStatuscolor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        'Logout',
-                        style: TextStyle(
+                      TextButton(
+                        onPressed: () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.remove('login');
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => const Login()),
+                              ModalRoute.withName('/'));
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          alignment: Alignment.centerLeft,
+                        ),
+                        child: const Text(
+                          'Logout',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
                             color: notReachableStatuscolor,
                             fontSize: 12,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ]),
+                ],
               ),
             ),
-            const Expanded(
-              child: BottomNavBar(pageIndex: 0),
-            ),
+            const Expanded(child: BottomNavBar(pageIndex: 0)),
           ],
         ),
       ),

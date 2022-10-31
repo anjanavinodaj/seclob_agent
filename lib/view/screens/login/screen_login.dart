@@ -6,7 +6,7 @@ import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/editable_box.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../home_Page/home_page.dart';
+import '../home/screen_home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()),
+                              builder: (context) => const ScreenHome()),
                         );
                       } else {
                         ScaffoldMessenger.of(context)

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seclob_agent/core/utils/converter.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:seclob_agent/core/utils/converters.dart';
+import 'package:seclob_agent/core/utils/validators.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
-import 'package:seclob_agent/view/screens/home_Page/home_page.dart';
+import 'package:seclob_agent/view/screens/home/screen_home.dart';
+import 'package:seclob_agent/view/widgets/text_fields/text_field_widget.dart';
 
 class ScreenManageLeads extends ConsumerStatefulWidget {
   const ScreenManageLeads({
@@ -61,52 +65,48 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(right: 15, left: 15, top: 25),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              SizedBox(
-                width: 350,
-                height: 38,
-                child: TextFormField(
-                  controller: search,
-                  obscureText: false,
-                  onChanged: (text) {
-                    setState(() {});
-                  },
-                  decoration: InputDecoration(
-                    suffixIcon: const Icon(
-                      Icons.search,
-                      size: 13,
-                      color: dropdowniconColor,
-                    ),
-                    labelText: 'Search',
-                    labelStyle: const TextStyle(
-                      fontFamily: 'Poppins',
-                      color: dropdowniconColor,
-                      fontSize: 12,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: background,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: background,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
+              TextFormField(
+                controller: search,
+                obscureText: false,
+                onChanged: (text) {
+                  setState(() {});
+                },
+                decoration: InputDecoration(
+                  suffixIcon: const Icon(
+                    Icons.search,
+                    size: 13,
+                    color: dropdowniconColor,
                   ),
-                  style: const TextStyle(
+                  labelText: 'Search',
+                  labelStyle: const TextStyle(
                     fontFamily: 'Poppins',
                     color: dropdowniconColor,
                     fontSize: 12,
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: background,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: background,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  color: dropdowniconColor,
+                  fontSize: 12,
                 ),
               ), //search
               const SizedBox(
@@ -173,10 +173,10 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                 items: <String>[
                                   'Pending',
                                   'Completed',
-                                  'Rejected',
-                                  'Not Reachable',
-                                  'Delete',
-                                  'Rescheduled'
+                                  'Cancelled',
+                                  'Not Responding',
+                                  'Deleted',
+                                  'Following',
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem(
                                     alignment: Alignment.centerLeft,
@@ -185,7 +185,9 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                       child: Text(
                                         value,
                                         style: const TextStyle(
-                                            fontSize: 9, color: textcolor),
+                                          fontSize: 9,
+                                          color: textcolor,
+                                        ),
                                       ),
                                     ),
                                   );
@@ -197,9 +199,7 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Container(
                     height: 27,
                     width: 159,
@@ -262,9 +262,7 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                   ),
                 ],
               ), //filter
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
               Expanded(
                 child: ListView.builder(
@@ -288,22 +286,45 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 20, right: 20, top: 18, bottom: 18),
-                              child: Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      lead['name'],
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: primaryColor,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w600),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    lead['name'],
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: primaryColor,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    lead['mobile'],
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: listviewtextColor,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      lead['mobile'],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  const SizedBox(
+                                    width: 193,
+                                    child: Text(
+                                      'Area name',
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: listviewtextColor,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 1),
+                                  SizedBox(
+                                    width: 193,
+                                    child: Text(
+                                      'Service type: ${lead['services']}',
                                       style: const TextStyle(
                                         fontSize: 10,
                                         color: listviewtextColor,
@@ -311,90 +332,165 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
-                                    const SizedBox(
-                                      width: 193,
-                                      child: Text(
-                                        'Area name',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: listviewtextColor,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 1),
+                                  SizedBox(
+                                    width: 193,
+                                    child: Text(
+                                      Converter.dateFormat.format(
+                                          DateTime.parse(lead['created_at'])),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: listviewtextColor,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 1),
-                                    SizedBox(
-                                      width: 193,
-                                      child: Text(
-                                        'Service type: ${lead['services']}',
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: listviewtextColor,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 1),
-                                    SizedBox(
-                                      width: 193,
-                                      child: Text(
-                                        Converter.dateFormat.format(
-                                            DateTime.parse(lead['created_at'])),
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: listviewtextColor,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 30, bottom: 18, right: 5),
-                              child: Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 21,
-                                      width: 89,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 25,
+                                    width: 90,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: ticketstatusColor,
+                                    ),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 37,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(2),
-                                        color: ticketstatusColor,
-                                      ),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 37,
-                                        decoration: BoxDecoration(
-                                            color: ticketstatusColor,
-                                            borderRadius:
-                                                BorderRadius.circular(2),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color:
-                                                      background.withOpacity(1),
-                                                  spreadRadius: 3,
-                                                  blurRadius: 3)
-                                            ]),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: DropdownButton<String>(
-                                            isExpanded: true,
-                                            underline: const SizedBox(),
-                                            dropdownColor: ticketstatusColor,
-                                            iconSize: 15,
-                                            value: widget.title,
-                                            iconEnabledColor: dropdownColor,
-                                            onChanged: (newStatus) async {
-                                              if (newStatus != widget.title) {
-                                                if (newStatus != 'Delete') {
+                                          color: ticketstatusColor,
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color:
+                                                    background.withOpacity(1),
+                                                spreadRadius: 3,
+                                                blurRadius: 3)
+                                          ]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
+                                        child: DropdownButton<String>(
+                                          isExpanded: true,
+                                          underline: const SizedBox(),
+                                          dropdownColor: ticketstatusColor,
+                                          iconSize: 15,
+                                          value: widget.title,
+                                          iconEnabledColor: dropdownColor,
+                                          onChanged: (newStatus) async {
+                                            if (newStatus != widget.title) {
+                                              if (newStatus != 'Deleted') {
+                                                if (newStatus == 'Completed') {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (ctx) => AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          'Amount : ',
+                                                                          style:
+                                                                              TextStyle(fontSize: 14.sp),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            15),
+                                                                    TextFeildWidget(
+                                                                      labelText:
+                                                                          'Amount',
+                                                                      floatingLabelBehavior:
+                                                                          FloatingLabelBehavior
+                                                                              .always,
+                                                                      inputBorder:
+                                                                          const OutlineInputBorder(),
+                                                                      autovalidateMode:
+                                                                          AutovalidateMode
+                                                                              .onUserInteraction,
+                                                                      inputFormatters:
+                                                                          Validators
+                                                                              .digitsOnly,
+                                                                      isDense:
+                                                                          true,
+                                                                      textInputType:
+                                                                          TextInputType
+                                                                              .number,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            5),
+                                                                    MaterialButton(
+                                                                        color:
+                                                                            primaryColor,
+                                                                        onPressed:
+                                                                            () async {
+                                                                          final bool
+                                                                              status =
+                                                                              await ApiService.updateLeadStatus(
+                                                                            id: lead['id'].toString(),
+                                                                            status:
+                                                                                newStatus!,
+                                                                          );
+
+                                                                          if (status) {
+                                                                            Navigator.pushReplacement(
+                                                                              context,
+                                                                              MaterialPageRoute(builder: (ctx) => const ScreenHome()),
+                                                                            );
+                                                                          }
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          'Confirm',
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                              ));
+                                                } else if (newStatus ==
+                                                    'Following') {
+                                                  final date =
+                                                      await _datePicker(
+                                                          context);
+
+                                                  if (date != null) {
+                                                    final bool status =
+                                                        await ApiService
+                                                            .updateLeadStatus(
+                                                      id: lead['id'].toString(),
+                                                      status: newStatus!,
+                                                    );
+
+                                                    if (status) {
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) =>
+                                                                const ScreenHome()),
+                                                      );
+                                                    }
+                                                  }
+                                                } else {
                                                   final bool status =
                                                       await ApiService
                                                           .updateLeadStatus(
@@ -407,93 +503,96 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (ctx) =>
-                                                              const HomePage()),
+                                                              const ScreenHome()),
                                                     );
                                                   }
-                                                } else {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        AlertDialog(
-                                                      title:
-                                                          const Text('Delete'),
-                                                      content: const Text(
-                                                          'Are you sure you want to delete this lead?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          child: const Text(
-                                                              'Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            final bool status =
-                                                                await ApiService
-                                                                    .updateLeadStatus(
-                                                              id: lead['id']
-                                                                  .toString(),
-                                                              status:
-                                                                  newStatus!,
-                                                            );
-
-                                                            if (status) {
-                                                              Navigator
-                                                                  .pushReplacement(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (ctx) =>
-                                                                            const HomePage()),
-                                                              );
-                                                            }
-                                                          },
-                                                          child: const Text(
-                                                            'Delete',
-                                                            style: TextStyle(
-                                                              color: Colors.red,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  );
                                                 }
-                                              }
-                                            },
-                                            items: <String>[
-                                              'Pending',
-                                              'Completed',
-                                              'Rejected',
-                                              'Not Reachable',
-                                              'Delete',
-                                              'Rescheduled',
-                                            ].map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                                return DropdownMenuItem(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  value: value,
-                                                  child: Center(
-                                                    child: Text(
-                                                      value,
-                                                      style: const TextStyle(
-                                                          fontSize: 9,
-                                                          color: dropdownColor),
-                                                    ),
+                                              } else {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    title: const Text('Delete'),
+                                                    content: const Text(
+                                                        'Are you sure you want to delete this lead?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        child: const Text(
+                                                            'Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          final bool status =
+                                                              await ApiService
+                                                                  .updateLeadStatus(
+                                                            id: lead['id']
+                                                                .toString(),
+                                                            status: newStatus!,
+                                                          );
+
+                                                          if (status) {
+                                                            Navigator
+                                                                .pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (ctx) =>
+                                                                      const ScreenHome()),
+                                                            );
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'Delete',
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
                                                 );
-                                              },
-                                            ).toList(),
-                                          ),
+                                              }
+                                            }
+                                          },
+                                          items: [
+                                            'Pending',
+                                            'Completed',
+                                            'Cancelled',
+                                            'Not Responding',
+                                            'Deleted',
+                                            'Following',
+                                          ].map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                              return DropdownMenuItem(
+                                                alignment: Alignment.centerLeft,
+                                                value: value,
+                                                child: Center(
+                                                  child: Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      fontSize: 9,
+                                                      color: dropdownColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).toList(),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 5),
-                                    Container(
-                                      height: 21,
-                                      width: 89,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  InkWell(
+                                    onTap: () {
+                                      // _makePhoneCall(lead['mobile']);
+                                      _callNumber(lead['mobile']);
+                                    },
+                                    child: Container(
+                                      height: 25,
+                                      width: 90,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(2),
                                         color: primaryColor,
@@ -501,7 +600,9 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                       child: Center(
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
+                                            left: 5,
+                                            right: 5,
+                                          ),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
@@ -524,9 +625,9 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                           ),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
                           ],
@@ -542,4 +643,21 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
       ),
     );
   }
+}
+
+_callNumber(String phoneNumber) async {
+  String number = phoneNumber;
+  await FlutterPhoneDirectCaller.callNumber(number);
+}
+
+//========== Date Picker ==========
+Future<DateTime?> _datePicker(BuildContext context) {
+  return showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now().subtract(
+      const Duration(days: 30),
+    ),
+    lastDate: DateTime.now().add(const Duration(days: 365)),
+  );
 }

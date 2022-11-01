@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:seclob_agent/core/token.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
 import 'package:seclob_agent/view/providers/path.dart';
 import 'package:seclob_agent/view/screens/home/screen_home.dart';
@@ -45,9 +46,9 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Sharan',
-                          style: TextStyle(
+                        Text(
+                          User.name!,
+                          style: const TextStyle(
                               color: textcolor,
                               fontSize: 24,
                               fontWeight: FontWeight.w600),
@@ -55,31 +56,31 @@ class _ProfileState extends State<Profile> {
                         const SizedBox(
                           height: 2,
                         ),
+                        // Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: const [
+                        //     Text(
+                        //       'Email:',
+                        //       style: TextStyle(
+                        //           color: textcolor,
+                        //           fontSize: 12,
+                        //           fontWeight: FontWeight.w400),
+                        //     ),
+                        //     Text(
+                        //       'sample@123',
+                        //       style: TextStyle(
+                        //           color: textcolor,
+                        //           fontSize: 12,
+                        //           fontWeight: FontWeight.w400),
+                        //     )
+                        //   ],
+                        // ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              'Email:',
-                              style: TextStyle(
-                                  color: textcolor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              'sample@123',
-                              style: TextStyle(
-                                  color: textcolor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Phone number:',
                               style: TextStyle(
                                   color: textcolor,
@@ -87,8 +88,8 @@ class _ProfileState extends State<Profile> {
                                   fontWeight: FontWeight.w400),
                             ),
                             Text(
-                              '9739737023',
-                              style: TextStyle(
+                              User.phone!,
+                              style: const TextStyle(
                                   color: textcolor,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400),

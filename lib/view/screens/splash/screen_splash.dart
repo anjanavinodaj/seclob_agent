@@ -31,7 +31,11 @@ class ScreenSplash extends StatelessWidget {
 
     // await prefs.remove('login');
 
-    AccessToken.token = prefs.getString('token');
+    User.token = prefs.getString('token');
+    User.name = prefs.getString('name');
+    User.phone = prefs.getString('phone');
+    User.id = prefs.getInt('id');
+    User.hrId = prefs.getInt('hr_id');
 
     if (isLogin == true) {
       Navigator.push(

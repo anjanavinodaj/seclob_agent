@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:seclob_agent/core/token.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/menu_box.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
@@ -47,9 +48,9 @@ class ScreenHome extends ConsumerWidget {
                         color: textcolor,
                       ),
                     ),
-                    const Text(
-                      'Sharan',
-                      style: TextStyle(
+                    Text(
+                      User.name!,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 30,
                         color: textcolor,

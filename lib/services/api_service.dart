@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
 //==================== Login ====================
-  static Future<String?> login(
+  static Future<bool> login(
       {required String mobile, required String password}) async {
     try {
       final body = json.encode({
@@ -33,18 +33,40 @@ class ApiService {
 
         if (_status == '01') {
           log('Logged in successfully');
-          return _result['access_token'];
+
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          prefs.setBool('login', true);
+
+          final String token = _result['access_token'];
+          final int id = _result['id'];
+          final String name = _result['name'];
+          final int hrId = _result['hr_id'];
+
+          prefs.setString('token', token);
+          prefs.setString('name', name);
+          prefs.setString('phone', mobile);
+          prefs.setInt('id', id);
+          prefs.setInt('hr_id', hrId);
+
+          User.token = token;
+          User.phone = mobile;
+          User.name = name;
+          User.id = id;
+          User.hrId = hrId;
+
+          return true;
         } else {
           log('Invalid User Details');
-          return null;
+          return false;
         }
       } else {
         log('Error Occured!');
-        return null;
+        return false;
       }
     } catch (e) {
       log('', error: e.toString());
-      return null;
+      return false;
     }
   }
 
@@ -58,7 +80,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.districts),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );
@@ -88,7 +110,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.states),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );
@@ -118,7 +140,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.services),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );
@@ -159,8 +181,8 @@ class ApiService {
         "state_id": stateId,
         "district_id": districtId,
         "address": "",
-        "telle_id": "5",
-        "hr_id": "11",
+        "telle_id": User.id,
+        "hr_id": User.hrId,
         "status": "New"
       });
 
@@ -168,7 +190,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.createLeads),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );
@@ -195,7 +217,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.listLeads),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );
@@ -234,7 +256,7 @@ class ApiService {
         Uri.parse(ApiEndpoints.updateLeadStatus + id),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${AccessToken.token}'
+          'Authorization': 'Bearer ${User.token}'
         },
         body: form,
       );

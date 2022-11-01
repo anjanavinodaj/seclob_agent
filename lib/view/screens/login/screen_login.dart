@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:seclob_agent/core/token.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/components/editable_box.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../home/screen_home.dart';
 
 class Login extends StatefulWidget {
@@ -99,28 +98,19 @@ class _LoginState extends State<Login> {
                       final _username = mobileController.text;
                       final _password = passwordController.text;
 
-                      final token = await ApiService.login(
+                      final status = await ApiService.login(
                         mobile: _username,
                         password: _password,
                       );
 
-                      log('Status = $token');
+                      log('Status = $status');
 
-                      if (token != null) {
+                      if (status) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text('Logged In Successfully'),
                           backgroundColor: Colors.green,
                         ));
-
-                        final SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-
-                        prefs.setBool('login', true);
-
-                        prefs.setString('token', token);
-
-                        AccessToken.token = token;
 
                         Navigator.push(
                           context,

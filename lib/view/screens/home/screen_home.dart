@@ -13,7 +13,7 @@ import 'package:seclob_agent/view/screens/dashboard_screens/screen_manage_leads.
 import 'package:seclob_agent/view/screens/profile/screen_profile.dart';
 import 'package:seclob_agent/view/screens/work_report/work_reports.dart';
 
-final _listLeadsProvider =
+final listLeadsProvider =
     FutureProvider.family.autoDispose<List, BuildContext>((ref, context) async {
   return ApiService.getLeads(context, query: '', status: '');
 });
@@ -23,7 +23,7 @@ class ScreenHome extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _listLeads = ref.watch(_listLeadsProvider(context));
+    final _listLeads = ref.watch(listLeadsProvider(context));
 
     return SafeArea(
         child: Scaffold(
@@ -59,6 +59,7 @@ class ScreenHome extends ConsumerWidget {
                     const SizedBox(height: 20),
                     _listLeads.when(
                       data: (data) {
+                        final List<Map> newLeads = [];
                         final List<Map> pendingLeads = [];
                         final List<Map> completedLeads = [];
                         final List<Map> cancelledLeads = [];
@@ -67,8 +68,10 @@ class ScreenHome extends ConsumerWidget {
                         final List<Map> followingLeads = [];
 
                         for (Map lead in data) {
-                          if (lead['status'] == 'Pending' ||
-                              lead['status'] == 'New') {
+                          if (lead['status'] == 'New') {
+                            newLeads.add(lead);
+                          }
+                          if (lead['status'] == 'Pending') {
                             pendingLeads.add(lead);
                           }
                           if (lead['status'] == 'Completed') {
@@ -103,6 +106,26 @@ class ScreenHome extends ConsumerWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenManageLeads(
+                                        leads: newLeads,
+                                        title: 'New',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: MenuBox(
+                                  count: newLeads.length.toString(),
+                                  title: "New",
+                                  bgColor: boxcolor1,
+                                  textColor: boxSecondaryColor1,
+                                  titleColor: boxSecondaryColor3,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenManageLeads(
                                         leads: pendingLeads,
                                         title: 'Pending',
                                       ),
@@ -112,7 +135,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: pendingLeads.length.toString(),
                                   title: "Pending",
-                                  bgColor: boxcolor1,
+                                  bgColor: boxcolor2,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor3,
                                 ),
@@ -132,7 +155,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: completedLeads.length.toString(),
                                   title: "Completed",
-                                  bgColor: boxcolor2,
+                                  bgColor: boxcolor3,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor2,
                                 ),
@@ -152,7 +175,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: cancelledLeads.length.toString(),
                                   title: "Cancelled",
-                                  bgColor: boxcolor3,
+                                  bgColor: boxcolor4,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor3,
                                 ),
@@ -172,7 +195,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: notRespondingLeads.length.toString(),
                                   title: "Not Responding",
-                                  bgColor: boxcolor4,
+                                  bgColor: boxcolor5,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor4,
                                 ),
@@ -192,7 +215,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: deletedLeads.length.toString(),
                                   title: "Deleted",
-                                  bgColor: boxcolor5,
+                                  bgColor: boxcolor6,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor1,
                                 ),
@@ -212,7 +235,7 @@ class ScreenHome extends ConsumerWidget {
                                 child: MenuBox(
                                   count: followingLeads.length.toString(),
                                   title: "Following",
-                                  bgColor: boxcolor6,
+                                  bgColor: boxcolor7,
                                   textColor: boxSecondaryColor1,
                                   titleColor: boxSecondaryColor1,
                                 ),

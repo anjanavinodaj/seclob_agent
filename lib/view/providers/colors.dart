@@ -15,6 +15,7 @@ const Color boxcolor3 = Color(0xffC13B3B);
 const Color boxcolor4 = Color(0xff7985CB);
 const Color boxcolor5 = Color(0xffFF0000);
 const Color boxcolor6 = Color(0xff65B168);
+const Color boxcolor7 = Color(0xFFB165A1);
 const Color boxSecondaryColor1 = Color(0xffFFE0BF);
 const Color boxSecondaryColor2 = Color(0xff9EFFEF);
 const Color boxSecondaryColor3 = Color(0xffF9C8C8);

@@ -1,9 +1,11 @@
 // ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:seclob_agent/services/api_service.dart';
 import 'package:seclob_agent/view/providers/colors.dart';
+import 'package:seclob_agent/view/screens/home/screen_home.dart';
 
 class AddNumber extends StatefulWidget {
   const AddNumber({Key? key}) : super(key: key);
@@ -507,64 +509,71 @@ class _AddNumberState extends State<AddNumber> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 37),
-                      child: InkWell(
-                        onTap: () async {
-                          final _formState = _formKey.currentState!;
+                    Consumer(
+                      builder: (context, ref, _) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 37),
+                          child: InkWell(
+                            onTap: () async {
+                              final _formState = _formKey.currentState!;
 
-                          if (_formState.validate()) {
-                            final msg = await ApiService.createLeads(
-                              name: nameController.text,
-                              companyName: companyName.text,
-                              number: contactNo.text,
-                              services: servicesIds,
-                              stateId: stateId,
-                              districtId: districtId,
-                            );
+                              if (_formState.validate()) {
+                                final msg = await ApiService.createLeads(
+                                  name: nameController.text,
+                                  companyName: companyName.text,
+                                  number: contactNo.text,
+                                  services: servicesIds,
+                                  stateId: stateId,
+                                  districtId: districtId,
+                                );
 
-                            if (msg == 'Invalid Mobile Number') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text('Please enter valid mobile number'),
-                                  backgroundColor: Colors.red,
+                                if (msg == 'Invalid Mobile Number') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Please enter valid mobile number'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                } else {
+                                  ref.invalidate(listLeadsProvider);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Lead created successfully'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Please fill required fields'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 43,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: textcolor),
+                              child: const Center(
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      color: dropdownColor, fontSize: 12),
                                 ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Lead created successfully'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-
-                              Navigator.pop(context);
-                            }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please fill required fields'),
-                                backgroundColor: Colors.red,
                               ),
-                            );
-                          }
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 43,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: textcolor),
-                          child: const Center(
-                            child: Text(
-                              'Submit',
-                              style:
-                                  TextStyle(color: dropdownColor, fontSize: 12),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

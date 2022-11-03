@@ -28,7 +28,7 @@ class ScreenManageLeads extends ConsumerStatefulWidget {
 
 class _PendigPageState extends ConsumerState<ScreenManageLeads> {
   TextEditingController search = TextEditingController();
-  String dropdownvalue = 'Pending';
+  String dropdownvalue = 'New';
 
   DateTime selectedDate = DateTime.now();
 
@@ -341,6 +341,7 @@ class _PendigPageState extends ConsumerState<ScreenManageLeads> {
                                                       newStatus, context, lead);
                                                 },
                                                 items: [
+                                                  'New',
                                                   'Pending',
                                                   'Completed',
                                                   'Cancelled',
